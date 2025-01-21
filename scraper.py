@@ -15,6 +15,20 @@ import requests
 
 scripts = {
     'hover_script': """
+        // Prevent all click events
+        document.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }, true);
+
+        // Remove pointer cursors and text decoration from links
+        document.querySelectorAll('a').forEach(link => {
+            link.style.cursor = 'default';
+            link.style.textDecoration = 'none';
+            link.style.pointerEvents = 'none';
+        });
+
         window._lastSelectedInfo = null;
         window._previousElement = null;
         
@@ -29,7 +43,7 @@ scripts = {
                 'class': element.className,
                 'id': element.id,
                 'attributes': Object.entries(element.attributes)
-                    .map(attr => `${attr[1].name}="${attr[1].value}"`).join(' '),
+                    .map(attr => `${attr[1].name}="${attr[1].value}`).join(' '),
                 'text': element.textContent.trim().substring(0, 100),
                 'html': element.innerHTML.substring(0, 100),
                 'dimensions': {
